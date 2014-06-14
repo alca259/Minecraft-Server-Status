@@ -9,7 +9,6 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.awt.SystemColor;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -107,6 +106,8 @@ public class Main {
 				}
 				
 				listPlugins.setModel(modeloPlugins);
+			} else {
+				valPlugins.setText(response.getPlugins());
 			}
 			
 			if (!response.getPlayerList().isEmpty()) {
@@ -138,7 +139,7 @@ public class Main {
 		frmMinecraftServerQuery = new JFrame();
 		frmMinecraftServerQuery.setIconImage(Toolkit.getDefaultToolkit().getImage(Main.class.getResource("/com/resources/images/icon.png")));
 		frmMinecraftServerQuery.setTitle("MSS - Minecraft Server Status");
-		frmMinecraftServerQuery.setBounds(100, 100, 758, 474);
+		frmMinecraftServerQuery.setBounds(100, 100, 800, 580);
 		frmMinecraftServerQuery.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		JPanel panelMain = new JPanel();
@@ -170,7 +171,7 @@ public class Main {
 		GridBagLayout gbl_panelInfo = new GridBagLayout();
 		gbl_panelInfo.columnWidths = new int[]{90, 291, 196, 0};
 		gbl_panelInfo.rowHeights = new int[]{110, 100, 42, 0};
-		gbl_panelInfo.columnWeights = new double[]{0.0, 0.0, 1.0, Double.MIN_VALUE};
+		gbl_panelInfo.columnWeights = new double[]{1.0, 0.0, 1.0, Double.MIN_VALUE};
 		gbl_panelInfo.rowWeights = new double[]{1.0, 0.0, 0.0, Double.MIN_VALUE};
 		panelInfo.setLayout(gbl_panelInfo);
 		
@@ -183,48 +184,94 @@ public class Main {
 		gbc_panelServerInfo.gridx = 0;
 		gbc_panelServerInfo.gridy = 0;
 		panelInfo.add(panelServerInfo, gbc_panelServerInfo);
-		
-		JLabel lblMOTD = new JLabel("MOTD");
-		lblMOTD.setFont(new Font("Tahoma", Font.BOLD, 11));
-		lblMOTD.setBounds(10, 20, 59, 14);
-		
-		JLabel lblGameId = new JLabel("Game ID");
-		lblGameId.setFont(new Font("Tahoma", Font.BOLD, 11));
-		lblGameId.setBounds(10, 40, 59, 14);
-		
-		JLabel lblPlugins = new JLabel("Plugins");
-		lblPlugins.setFont(new Font("Tahoma", Font.BOLD, 11));
-		lblPlugins.setBounds(10, 80, 59, 14);
-		
-		JLabel lblHostname = new JLabel("Hostname");
-		lblHostname.setFont(new Font("Tahoma", Font.BOLD, 11));
-		lblHostname.setBounds(10, 60, 59, 14);
-		
-		valPlugins = new JLabel("");
-		valPlugins.setBounds(85, 80, 283, 14);
-		
-		valHostname = new JLabel("");
-		valHostname.setBounds(85, 60, 283, 14);
-		
-		valGameID = new JLabel("");
-		valGameID.setBounds(85, 40, 283, 14);
-		
-		valMOTD = new JLabel("");
-		valMOTD.setBounds(85, 20, 283, 14);
-		panelServerInfo.setLayout(null);
-		panelServerInfo.add(lblGameId);
-		panelServerInfo.add(lblMOTD);
-		panelServerInfo.add(lblHostname);
-		panelServerInfo.add(lblPlugins);
-		panelServerInfo.add(valGameID);
-		panelServerInfo.add(valMOTD);
-		panelServerInfo.add(valPlugins);
-		panelServerInfo.add(valHostname);
-		
-				listPlugins.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-				listPlugins.setBackground(SystemColor.menu);
-				listPlugins.setBounds(10, 101, 356, 144);
-				panelServerInfo.add(listPlugins, BorderLayout.CENTER);
+				panelServerInfo.setLayout(new BorderLayout(0, 0));
+				
+				JPanel panel = new JPanel();
+				panelServerInfo.add(panel, BorderLayout.NORTH);
+				GridBagLayout gbl_panel = new GridBagLayout();
+				gbl_panel.columnWidths = new int[]{63, 58, 0};
+				gbl_panel.rowHeights = new int[]{14, 0, 0, 0, 10, 0};
+				gbl_panel.columnWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
+				gbl_panel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+				panel.setLayout(gbl_panel);
+				
+				JLabel lblGameId = new JLabel("Game ID");
+				lblGameId.setFont(new Font("Tahoma", Font.BOLD, 11));
+				GridBagConstraints gbc_lblGameId = new GridBagConstraints();
+				gbc_lblGameId.fill = GridBagConstraints.BOTH;
+				gbc_lblGameId.insets = new Insets(0, 0, 5, 5);
+				gbc_lblGameId.gridx = 0;
+				gbc_lblGameId.gridy = 0;
+				panel.add(lblGameId, gbc_lblGameId);
+				
+				valGameID = new JLabel("");
+				GridBagConstraints gbc_valGameID = new GridBagConstraints();
+				gbc_valGameID.fill = GridBagConstraints.BOTH;
+				gbc_valGameID.insets = new Insets(0, 0, 5, 0);
+				gbc_valGameID.gridx = 1;
+				gbc_valGameID.gridy = 0;
+				panel.add(valGameID, gbc_valGameID);
+				
+				JLabel lblMOTD = new JLabel("MOTD");
+				lblMOTD.setFont(new Font("Tahoma", Font.BOLD, 11));
+				GridBagConstraints gbc_lblMOTD = new GridBagConstraints();
+				gbc_lblMOTD.fill = GridBagConstraints.BOTH;
+				gbc_lblMOTD.insets = new Insets(0, 0, 5, 5);
+				gbc_lblMOTD.gridx = 0;
+				gbc_lblMOTD.gridy = 1;
+				panel.add(lblMOTD, gbc_lblMOTD);
+				
+				valMOTD = new JLabel("");
+				GridBagConstraints gbc_valMOTD = new GridBagConstraints();
+				gbc_valMOTD.fill = GridBagConstraints.BOTH;
+				gbc_valMOTD.insets = new Insets(0, 0, 5, 0);
+				gbc_valMOTD.gridx = 1;
+				gbc_valMOTD.gridy = 1;
+				panel.add(valMOTD, gbc_valMOTD);
+				
+				JLabel lblHostname = new JLabel("Hostname");
+				lblHostname.setFont(new Font("Tahoma", Font.BOLD, 11));
+				GridBagConstraints gbc_lblHostname = new GridBagConstraints();
+				gbc_lblHostname.fill = GridBagConstraints.BOTH;
+				gbc_lblHostname.insets = new Insets(0, 0, 5, 5);
+				gbc_lblHostname.gridx = 0;
+				gbc_lblHostname.gridy = 2;
+				panel.add(lblHostname, gbc_lblHostname);
+				
+				valHostname = new JLabel("");
+				GridBagConstraints gbc_valHostname = new GridBagConstraints();
+				gbc_valHostname.fill = GridBagConstraints.BOTH;
+				gbc_valHostname.insets = new Insets(0, 0, 5, 0);
+				gbc_valHostname.gridx = 1;
+				gbc_valHostname.gridy = 2;
+				panel.add(valHostname, gbc_valHostname);
+				
+				JLabel lblPlugins = new JLabel("Plugins");
+				lblPlugins.setFont(new Font("Tahoma", Font.BOLD, 11));
+				GridBagConstraints gbc_lblPlugins = new GridBagConstraints();
+				gbc_lblPlugins.fill = GridBagConstraints.BOTH;
+				gbc_lblPlugins.insets = new Insets(0, 0, 5, 5);
+				gbc_lblPlugins.gridx = 0;
+				gbc_lblPlugins.gridy = 3;
+				panel.add(lblPlugins, gbc_lblPlugins);
+				
+				valPlugins = new JLabel("");
+				GridBagConstraints gbc_valPlugins = new GridBagConstraints();
+				gbc_valPlugins.insets = new Insets(0, 0, 5, 0);
+				gbc_valPlugins.fill = GridBagConstraints.BOTH;
+				gbc_valPlugins.gridx = 1;
+				gbc_valPlugins.gridy = 3;
+				panel.add(valPlugins, gbc_valPlugins);
+				
+				JPanel panel_1 = new JPanel();
+				panelServerInfo.add(panel_1, BorderLayout.CENTER);
+						panel_1.setLayout(new BorderLayout(0, 0));
+						listPlugins.setVisibleRowCount(16);
+						listPlugins.setLayoutOrientation(JList.VERTICAL_WRAP);
+						panel_1.add(listPlugins);
+						
+								listPlugins.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+								listPlugins.setBackground(UIManager.getColor("Panel.background"));
 		
 		JPanel panelPlayerInfo = new JPanel();
 		panelPlayerInfo.setBorder (BorderFactory.createTitledBorder ("Player info"));
@@ -237,8 +284,7 @@ public class Main {
 		panelInfo.add(panelPlayerInfo, gbc_panelPlayerInfo);
 		panelPlayerInfo.setLayout(new BorderLayout(0, 0));
 		
-		listPlayers.setBackground(UIManager.getColor("EditorPane.disabledBackground"));
-		listPlayers.setEnabled(false);
+		listPlayers.setBackground(UIManager.getColor("Panel.background"));
 		listPlayers.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		panelPlayerInfo.add(listPlayers, BorderLayout.CENTER);
 		
@@ -251,43 +297,83 @@ public class Main {
 		gbc_panelGameInfo.gridx = 0;
 		gbc_panelGameInfo.gridy = 1;
 		panelInfo.add(panelGameInfo, gbc_panelGameInfo);
-		
-		JLabel lblMapName = new JLabel("Map name");
-		lblMapName.setFont(new Font("Tahoma", Font.BOLD, 11));
-		lblMapName.setBounds(10, 77, 80, 14);
-		
-		JLabel lblGameVersion = new JLabel("Game version");
-		lblGameVersion.setFont(new Font("Tahoma", Font.BOLD, 11));
-		lblGameVersion.setBounds(10, 36, 80, 14);
+		GridBagLayout gbl_panelGameInfo = new GridBagLayout();
+		gbl_panelGameInfo.columnWidths = new int[]{80, 73, 0};
+		gbl_panelGameInfo.rowHeights = new int[]{14, 14, 14, 14, 0};
+		gbl_panelGameInfo.columnWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
+		gbl_panelGameInfo.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		panelGameInfo.setLayout(gbl_panelGameInfo);
 		
 		JLabel lblGamemode = new JLabel("Gamemode");
 		lblGamemode.setFont(new Font("Tahoma", Font.BOLD, 11));
-		lblGamemode.setBounds(10, 16, 80, 14);
+		GridBagConstraints gbc_lblGamemode = new GridBagConstraints();
+		gbc_lblGamemode.anchor = GridBagConstraints.NORTH;
+		gbc_lblGamemode.fill = GridBagConstraints.HORIZONTAL;
+		gbc_lblGamemode.insets = new Insets(0, 0, 5, 5);
+		gbc_lblGamemode.gridx = 0;
+		gbc_lblGamemode.gridy = 0;
+		panelGameInfo.add(lblGamemode, gbc_lblGamemode);
+		
+		valGamemode = new JLabel("");
+		GridBagConstraints gbc_valGamemode = new GridBagConstraints();
+		gbc_valGamemode.fill = GridBagConstraints.BOTH;
+		gbc_valGamemode.insets = new Insets(0, 0, 5, 0);
+		gbc_valGamemode.gridx = 1;
+		gbc_valGamemode.gridy = 0;
+		panelGameInfo.add(valGamemode, gbc_valGamemode);
+		
+		JLabel lblGameVersion = new JLabel("Game version");
+		lblGameVersion.setFont(new Font("Tahoma", Font.BOLD, 11));
+		GridBagConstraints gbc_lblGameVersion = new GridBagConstraints();
+		gbc_lblGameVersion.anchor = GridBagConstraints.NORTH;
+		gbc_lblGameVersion.fill = GridBagConstraints.HORIZONTAL;
+		gbc_lblGameVersion.insets = new Insets(0, 0, 5, 5);
+		gbc_lblGameVersion.gridx = 0;
+		gbc_lblGameVersion.gridy = 1;
+		panelGameInfo.add(lblGameVersion, gbc_lblGameVersion);
+		
+		valGameVersion = new JLabel("");
+		GridBagConstraints gbc_valGameVersion = new GridBagConstraints();
+		gbc_valGameVersion.fill = GridBagConstraints.BOTH;
+		gbc_valGameVersion.insets = new Insets(0, 0, 5, 0);
+		gbc_valGameVersion.gridx = 1;
+		gbc_valGameVersion.gridy = 1;
+		panelGameInfo.add(valGameVersion, gbc_valGameVersion);
 		
 		JLabel lblPlayers = new JLabel("Players");
 		lblPlayers.setFont(new Font("Tahoma", Font.BOLD, 11));
-		lblPlayers.setBounds(10, 57, 80, 14);
-		
-		valGamemode = new JLabel("");
-		valGamemode.setBounds(100, 16, 268, 14);
-		
-		valGameVersion = new JLabel("");
-		valGameVersion.setBounds(100, 36, 268, 14);
+		GridBagConstraints gbc_lblPlayers = new GridBagConstraints();
+		gbc_lblPlayers.anchor = GridBagConstraints.NORTH;
+		gbc_lblPlayers.fill = GridBagConstraints.HORIZONTAL;
+		gbc_lblPlayers.insets = new Insets(0, 0, 5, 5);
+		gbc_lblPlayers.gridx = 0;
+		gbc_lblPlayers.gridy = 2;
+		panelGameInfo.add(lblPlayers, gbc_lblPlayers);
 		
 		valPlayers = new JLabel("");
-		valPlayers.setBounds(100, 57, 268, 14);
+		GridBagConstraints gbc_valPlayers = new GridBagConstraints();
+		gbc_valPlayers.fill = GridBagConstraints.BOTH;
+		gbc_valPlayers.insets = new Insets(0, 0, 5, 0);
+		gbc_valPlayers.gridx = 1;
+		gbc_valPlayers.gridy = 2;
+		panelGameInfo.add(valPlayers, gbc_valPlayers);
+		
+		JLabel lblMapName = new JLabel("Map name");
+		lblMapName.setFont(new Font("Tahoma", Font.BOLD, 11));
+		GridBagConstraints gbc_lblMapName = new GridBagConstraints();
+		gbc_lblMapName.anchor = GridBagConstraints.NORTH;
+		gbc_lblMapName.fill = GridBagConstraints.HORIZONTAL;
+		gbc_lblMapName.insets = new Insets(0, 0, 0, 5);
+		gbc_lblMapName.gridx = 0;
+		gbc_lblMapName.gridy = 3;
+		panelGameInfo.add(lblMapName, gbc_lblMapName);
 		
 		valMapName = new JLabel("");
-		valMapName.setBounds(100, 77, 268, 14);
-		panelGameInfo.setLayout(null);
-		panelGameInfo.add(lblGameVersion);
-		panelGameInfo.add(lblGamemode);
-		panelGameInfo.add(lblMapName);
-		panelGameInfo.add(lblPlayers);
-		panelGameInfo.add(valPlayers);
-		panelGameInfo.add(valMapName);
-		panelGameInfo.add(valGamemode);
-		panelGameInfo.add(valGameVersion);
+		GridBagConstraints gbc_valMapName = new GridBagConstraints();
+		gbc_valMapName.fill = GridBagConstraints.BOTH;
+		gbc_valMapName.gridx = 1;
+		gbc_valMapName.gridy = 3;
+		panelGameInfo.add(valMapName, gbc_valMapName);
 		
 		Component verticalStrut = Box.createVerticalStrut(20);
 		GridBagConstraints gbc_verticalStrut = new GridBagConstraints();
